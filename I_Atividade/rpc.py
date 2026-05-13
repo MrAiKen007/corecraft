@@ -1,8 +1,8 @@
 import requests
 from requests.auth import HTTPBasicAuth
 
-RPC_URL = "http://127.0.0.1:18443"
-AUTH = HTTPBasicAuth("teste","teste")
+RPC_URL = "http://127.0.0.1:38332"
+AUTH = HTTPBasicAuth("bitcoin","senha_forte_aqui")
 
 def rpc(method , params=[]):
     payload = {

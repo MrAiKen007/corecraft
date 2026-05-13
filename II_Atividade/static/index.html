@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CoreCraft | Bitcoin Snapshot</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="dark-theme">
+    <div class="background-glow"></div>
+    
+    <header>
+        <div class="container">
+            <div class="logo">
+                <i class="fab fa-bitcoin"></i>
+                <span>Core<span>Craft</span></span>
+            </div>
+            <div class="status-indicator">
+                <span class="dot"></span>
+                <span>Node Online</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <h1>Snapshot Inteligente</h1>
+            <p>Interpretando o estado do Bitcoin Core em tempo real.</p>
+        </section>
+
+        <div class="dashboard-grid">
+            <!-- Mempool Intelligence Card -->
+            <div class="card glass-card" id="mempool-card">
+                <div class="card-header">
+                    <i class="fas fa-brain"></i>
+                    <h2>Mempool Intelligence</h2>
+                </div>
+                <div class="card-body">
+                    <div class="main-stat">
+                        <span class="label">Transações</span>
+                        <span class="value" id="tx-count">---</span>
+                    </div>
+                    
+                    <div class="stats-row">
+                        <div class="stat-item">
+                            <span class="label">Fee Média</span>
+                            <span class="value" id="avg-fee">--- <small>sat/vB</small></span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="label">Total Size</span>
+                            <span class="value" id="total-vsize">--- <small>MB</small></span>
+                        </div>
+                    </div>
+
+                    <div class="fee-distribution">
+                        <h3>Distribuição de Fees</h3>
+                        <div class="dist-bars">
+                            <div class="dist-item">
+                                <span class="dist-label">Baixa (<10)</span>
+                                <div class="progress-container">
+                                    <div class="progress-bar low" id="bar-low"></div>
+                                </div>
+                                <span class="dist-value" id="val-low">0</span>
+                            </div>
+                            <div class="dist-item">
+                                <span class="dist-label">Média (10-50)</span>
+                                <div class="progress-container">
+                                    <div class="progress-bar medium" id="bar-medium"></div>
+                                </div>
+                                <span class="dist-value" id="val-medium">0</span>
+                            </div>
+                            <div class="dist-item">
+                                <span class="dist-label">Alta (>50)</span>
+                                <div class="progress-container">
+                                    <div class="progress-bar high" id="bar-high"></div>
+                                </div>
+                                <span class="dist-value" id="val-high">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <span id="mempool-range">Min: --- | Max: --- sat/vB</span>
+                </div>
+            </div>
+
+            <!-- Node Sync Status Card -->
+            <div class="card glass-card" id="sync-card">
+                <div class="card-header">
+                    <i class="fas fa-sync-alt"></i>
+                    <h2>Node Sync Status</h2>
+                </div>
+                <div class="card-body">
+                    <div class="sync-visual">
+                        <div class="sync-circle">
+                            <div class="inner-circle" id="lag-display">---</div>
+                            <span class="circle-label">Blocos de Lag</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stats-list">
+                        <div class="list-item">
+                            <span>Blocos Processados</span>
+                            <span class="value" id="sync-blocks">---</span>
+                        </div>
+                        <div class="list-item">
+                            <span>Headers Sincronizados</span>
+                            <span class="value" id="sync-headers">---</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer" id="sync-status-text">
+                    Sincronizando...
+                </div>
+            </div>
+
+            <!--  ZMQ (AULA 02) -->
+            <div class="card glass-card" id="event-activity-card">
+                <div class="card-header">
+                    <i class="fas fa-bolt" style="color: #f7931a;"></i>
+                    <h2>Atividade de Eventos (ZMQ)</h2>
+                </div>
+                <div class="card-body">
+                    <div class="stats-grid">
+                        <div class="stat-box">
+                            <span class="label">TX Recebidas</span>
+                            <span class="value" id="zmq-tx-count">0</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="label">Blocos ZMQ</span>
+                            <span class="value" id="zmq-blocks-count">0</span>
+                        </div>
+                    </div>
+                    <div class="stat-full">
+                        <span class="label">Taxa de Eventos</span>
+                        <span class="value" id="zmq-rate">0.00 <small>tx/s</small></span>
+                    </div>
+                    <div id="divergence-alert" class="alert-box" style="display: none;">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span>Divergência Detectada! ZMQ vs RPC</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Últimos Eventos Card (AULA 02) -->
+            <div class="card glass-card" id="latest-events-card">
+                <div class="card-header">
+                    <i class="fas fa-list-ul"></i>
+                    <h2>Últimos Eventos</h2>
+                </div>
+                <div class="card-body scroll-body">
+                    <h3>Blocos</h3>
+                    <ul id="latest-blocks-list" class="event-list"></ul>
+                    <h3>Transações</h3>
+                    <ul id="latest-txs-list" class="event-list"></ul>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 CoreCraft - Mentoria Bitcoin</p>
+        <p>By: Jorge Paim | BTC </p>
+    </footer>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>

@@ -1,3 +1,26 @@
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
+.stat-box, .stat-full { background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px; text-align: center; }
+.stat-box .label, .stat-full .label { display: block; font-size: 0.8rem; color: #aaa; margin-bottom: 5px; }
+.stat-box .value, .stat-full .value { font-size: 1.2rem; font-weight: 700; color: #fff; }
+
+.alert-box { 
+    margin-top: 15px; background: rgba(255, 71, 87, 0.2); border-radius: 8px; padding: 10px; 
+    color: #ff4757; display: flex; align-items: center; gap: 10px; font-weight: 600; border: 1px solid #ff4757; 
+}
+
+.scroll-body { max-height: 300px; overflow-y: auto; padding-right: 10px; }
+.scroll-body::-webkit-scrollbar { width: 5px; }
+.scroll-body::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+
+.event-list { list-style: none; padding: 0; margin: 10px 0 20px 0; }
+.event-list li { 
+    font-size: 0.8rem; padding: 8px; background: rgba(255,255,255,0.03); 
+    border-radius: 4px; margin-bottom: 5px; font-family: monospace; 
+    border-left: 3px solid var(--primary); display: flex; justify-content: space-between;
+}
+.event-list li span.ts { color: #666; font-size: 0.7rem; }
+
+/* Existing Styles */
 :root {
     --primary: #f7931a;
     --primary-glow: rgba(247, 147, 26, 0.4);
